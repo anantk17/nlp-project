@@ -56,7 +56,7 @@ def gen_vocab_bigram_file(data_file,vocab_file):
                 outfile.write(key+"\n")
         for key,value in c1.items():
             #print key, value
-            if len(key) > 1 and value >= 3 :
+            if len(key) > 1 and value > 3 :
                 vocabulary.append(key)
                 outfile.write(key+"\n")
 
