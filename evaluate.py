@@ -1,10 +1,11 @@
 import re,math
 import numpy as np
-from model import NaiveBayesClassifier
+import model as m
+import model2 as m2
 from sklearn.cross_validation import KFold
 from sklearn.metrics import accuracy_score,f1_score,recall_score
 
-def evaluate(data_file):
+def evaluate(data_file,model):
     regex = r'([+-])\s([\s\S]*)\n'
     data = []
     labels = []
@@ -31,8 +32,6 @@ def evaluate(data_file):
     for train_index, test_index in kf:
         train_data,train_labels = X[train_index], y[train_index]
         test_data, test_labels = X[test_index],y[test_index]
-        
-        model = NaiveBayesClassifier()
         model.train(train_data,train_labels)
 
         result = model.test(test_data)
@@ -41,9 +40,15 @@ def evaluate(data_file):
         acc.append(a)
         f_score.append(f)
         recall.append(r)
+        print a,f,r
 
     print "accuracy=",np.mean(acc)
     print "f_score=",np.mean(f_score)
     print "recall=",np.mean(recall)
 
-evaluate('data-final-stop.txt')
+m1 = m.NaiveBayesClassifier()
+m2 = m2.NaiveBayesClassifier()
+evaluate('data-final-stop.txt',m1)
+evaluate('data-final-stop.txt',m2)
+
+

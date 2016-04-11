@@ -54,9 +54,10 @@ def gen_vocab_bigram_file(data_file,vocab_file):
             if len(key) > 1 and value >= 2 :
                 vocabulary.append(key)
                 outfile.write(key+"\n")
+        top_100 = [ w[0] for w in c1.most_common(100) ]
         for key,value in c1.items():
             #print key, value
-            if len(key) > 1 and value > 3 :
+            if key in top_100 :
                 vocabulary.append(key)
                 outfile.write(key+"\n")
 
