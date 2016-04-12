@@ -19,19 +19,10 @@ Repository for the Natural Language Processing Course Project
 - model.py : Contains the definition for the NaiveBayesClassifier Class used to represent our model
 - train-model.py : Code to train and pickle a model
 
-# Unigram Model
-The NaiveBayesClassifier Class defined in model.py is used to represent a unigram model.
+# Unigram Model and Bigram Model
+The NaiveBayesClassifier Class defined in model.py and model2.py is used to represent a unigram model and a bigram model respectively.
 
-It has the following attributes:
-- ```positive_count``` : A dictionary storing the counts of each word in the positive class
-- ```negative_count``` : A dictionary storing the counts of each word in the positive class
-- ```vocab_length``` : The length of vocabulary obtained from the entire corpus
-- ```pos_corpus_length``` : The count of words belonging to the positive class in the corpus
-- ```neg_corpus_length``` : The count of words belonging to the negative class in the corpus
-- ```positive_lines``` : The number of sentences that belong to the positive class in the dataset
-- ```negative_lines``` : The number of sentences that belong to the negative class in the dataset
-
-And provides the following methods:
+It provides the following methods:
 - ```__init__(self)``` : Default constructor
 - ```train_from_file(self,data_file)```: Trains a model instance using the data read from  ```data_file```
 - ```train(self,data,labels)```: Trains a model using list of sentences as ```data``` and their corresponding labels as ```label```
@@ -42,4 +33,5 @@ And provides the following methods:
 - ```write_counts(self,line)``` : Prints the counts of attributes for debugging purposes
 
 # Results 
-We obtained an accuracy of __91.5%__ after 10 fold cross validation of the model on our training data.
+For Part A,we obtained an accuracy of __91.9%__ after 10 fold cross validation of the model on our training data.
+For Part B,we obtained an accuracy of __92.0%__ after 10 fold cross validation of the model on our training data.
