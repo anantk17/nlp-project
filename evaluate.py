@@ -48,7 +48,7 @@ def evaluate(data_file,model):
 
 m1 = m.NaiveBayesClassifier()
 m2 = m2.NaiveBayesClassifier()
-evaluate('data-final-stop.txt',m1)
+#evaluate('data-final-stop.txt',m1)
 evaluate('data-final-stop.txt',m2)
 
 

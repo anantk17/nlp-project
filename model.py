@@ -39,19 +39,25 @@ class NaiveBayesClassifier:
 
         vocab_count = Counter(positive_words + negative_words)
         vocab_words = []
+        
+        self.positive_count = Counter(positive_words)
+        self.negative_count = Counter(negative_words)
+
         for key,value in vocab_count.items():
             if not(len(key) > 1 and value >= 2):
                 del vocab_count[key]
-                positive_words = filter(lambda x: x != key, positive_words)
-                negative_words = filter(lambda x: x != key, negative_words)
+                #positive_words = filter(lambda x: x != key, positive_words)
+                #negative_words = filter(lambda x: x != key, negative_words)
+                del self.positive_count[key]
+                del self.negative_count[key]
 
         self.vocab_length = len(vocab_count)
 
-        self.pos_corpus_length = len(positive_words)
-        self.neg_corpus_length = len(negative_words)
+        self.pos_corpus_length = len(list(self.positive_count.elements()))
+        self.neg_corpus_length = len(list(self.negative_count.elements()))
 
-        self.positive_count = Counter(positive_words)
-        self.negative_count = Counter(negative_words)
+        #self.positive_count = Counter(positive_words)
+        #self.negative_count = Counter(negative_words)
 
     def test(self,test_data):
         predicted_labels = []

@@ -45,20 +45,24 @@ class NaiveBayesClassifier:
 
         vocab_count = Counter(positive_unigrams + negative_unigrams)
         vocab_words = []
-        for key,value in vocab_count.items():
-            if not(len(key) > 1 and value >= 2):
-                del vocab_count[key]
-                positive_unigrams = filter(lambda x: x != key, positive_unigrams)
-                negative_unigrams = filter(lambda x: x != key, negative_unigrams)
-
-        self.unigram_vocab_length = len(vocab_count)
-
-        self.pos_unigram_corpus_length = len(positive_unigrams)
-        self.neg_unigram_corpus_length = len(negative_unigrams)
 
         self.positive_unigram_count = Counter(positive_unigrams)
         self.negative_unigram_count = Counter(negative_unigrams)
-        
+
+        for key,value in vocab_count.items():
+            if not(len(key) > 1 and value >= 2):
+                del vocab_count[key]
+                #positive_unigrams = filter(lambda x: x != key, positive_unigrams)
+                #negative_unigrams = filter(lambda x: x != key, negative_unigrams)
+                del self.positive_unigram_count[key]
+                del self.negative_unigram_count[key]
+
+        self.unigram_vocab_length = len(vocab_count)
+
+        self.pos_unigram_corpus_length = len(list(self.positive_unigram_count.elements()))
+        self.neg_unigram_corpus_length = len(list(self.negative_unigram_count.elements()))
+
+                
         #Training bigrams from here
         positive_bigrams = []
         negative_bigrams = []
@@ -71,20 +75,24 @@ class NaiveBayesClassifier:
         
         bigram_vocab_count = Counter(positive_bigrams + negative_bigrams)
         top_100 = [ w[0] for w in bigram_vocab_count.most_common(100) ]
+        
+        self.positive_bigram_count = Counter(positive_bigrams)
+        self.negative_bigram_count = Counter(negative_bigrams)
+
         for key,value in bigram_vocab_count.items():
             if not key in top_100 :
                 del vocab_count[key]
-                positive_bigrams = filter(lambda x: x != key, positive_bigrams)
-                negative_bigrams = filter(lambda x: x != key, negative_bigrams)
+                #positive_bigrams = filter(lambda x: x != key, positive_bigrams)
+                #negative_bigrams = filter(lambda x: x != key, negative_bigrams)
+                del self.positive_bigram_count[key]
+                del self.negative_bigram_count[key]
         
         self.bigram_vocab_length = len(bigram_vocab_count)
         
-        self.pos_bigram_corpus_length = len(positive_bigrams)
-        self.neg_bigram_corpus_length = len(negative_bigrams)
+        self.pos_bigram_corpus_length = len(list(self.positive_bigram_count.elements()))
+        self.neg_bigram_corpus_length = len(list(self.negative_bigram_count.elements()))
 
-        self.positive_bigram_count = Counter(positive_bigrams)
-        self.negative_bigram_count = Counter(negative_bigrams)
-        
+                
         
     def test(self,test_data):
         predicted_labels = []
@@ -100,18 +108,20 @@ class NaiveBayesClassifier:
         return math.log((self.negative_unigram_count[w] + 1.0)/(self.neg_unigram_corpus_length + self.unigram_vocab_length),2)
         
     def pos_bigram_prob(self,w):
-        return math.log((self.positive_bigram_count[w] + 1.0)/(self.pos_bigram_corpus_length+self.bigram_vocab_length),2)
+        #return math.log((self.positive_bigram_count[w] + 1.0)/(self.pos_bigram_corpus_length+self.bigram_vocab_length),2)
+        return math.log((self.positive_bigram_count[w]*1.0)/(self.pos_bigram_corpus_length),2)
 
     def neg_bigram_prob(self,w):
-        return math.log((self.negative_bigram_count[w]+ 1.0)/(self.neg_bigram_corpus_length + self.bigram_vocab_length),2)
-    
+        #return math.log((self.negative_bigram_count[w]+ 1.0)/(self.neg_bigram_corpus_length + self.bigram_vocab_length),2)
+        return math.log((self.negative_bigram_count[w]*1.0)/(self.neg_bigram_corpus_length),2)
+
     def classify(self,line):
         pos_prob = 0.0
         neg_prob = 0.0
         
         bigrams = self.gen_bigrams(line,False)
         for bigram in bigrams:
-                if self.negative_bigram_count[bigram] == 0 and self.positive_bigram_count[bigram] == 0 :
+                if self.negative_bigram_count[bigram] == 0 or self.positive_bigram_count[bigram] == 0 :
                     word = bigram.split(",")[1]
                     pos_prob += self.pos_word_prob(word)
                     neg_prob += self.neg_word_prob(word)
