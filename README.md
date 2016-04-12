@@ -16,7 +16,9 @@ Repository for the Natural Language Processing Course Project
 - vocabulary/ : Contains the vocabulary file and the code required to obtain it
 - evaluate.py : Code for performing 10 fold cross validation
 - model.p : Pickled model obtained by training our model on the entire dataset
-- model.py : Contains the definition for the NaiveBayesClassifier Class used to represent our model
+- model2.p : Pickled model obtained by training our model on the entire dataset (for Part B)
+- model.py : Contains the definition for the NaiveBayesClassifier Class used to represent our unigram model
+- model2.py : Contains the definition for the NaiveBayesClassifier Class used to represent our bigram model
 - train-model.py : Code to train and pickle a model
 
 # Unigram Model and Bigram Model
